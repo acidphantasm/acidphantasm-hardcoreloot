@@ -4,31 +4,30 @@ using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
 using System;
+using System.Linq;
 
 namespace acidphantasm_hardcoreloot.Patches
 {
     internal class IsUnlootableFromPrefixPatch : ModulePatch
     {
+        static string[] validContainers = { "FirstPrimaryWeapon", "SecondPrimaryWeapon", "Holster", "Scabbard", "Headwear", "FaceCover", "Earpiece", "Eyewear", "ArmBand", "TacticalVest", "ArmorVest", "Backpack" };
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(UnlootableComponent), nameof(UnlootableComponent.IsUnlootableFrom));
         }
 
         [PatchPrefix]
-        static bool Prefix(Slot container, ref bool __result)
+        static bool Prefix(EFT.InventoryLogic.IContainer container, ref bool __result)
         {
-            if (Plugin.enable)
+            if (Plugin.enable && container != null && validContainers.Contains(container.ID))
             {
                 GClass3109 gclass;
                 gclass = container.ParentItem.Owner as GClass3109;
 
-                if (gclass.Side == EPlayerSide.Savage && !Plugin.scav ||
-                    (gclass.Side == EPlayerSide.Bear || gclass.Side == EPlayerSide.Usec) && !Plugin.pmc ||
-                    container == null)
-                {
-                    return true;
-                }
-                switch (container.Name)
+                if (gclass.Side == EPlayerSide.Savage && !Plugin.scav) return true;
+                if ((gclass.Side == EPlayerSide.Bear || gclass.Side == EPlayerSide.Usec) && !Plugin.pmc) return true;
+
+                switch (container.ID)
                 {
                     case "FirstPrimaryWeapon":
                         if (Plugin.slotPrimary)
