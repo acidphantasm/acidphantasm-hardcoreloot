@@ -22,6 +22,9 @@ namespace acidphantasm_hardcoreloot
         public static ConfigEntry<bool> slotArmour;
         public static ConfigEntry<bool> slotRig;
         public static ConfigEntry<bool> slotBackpack;
+        private const string SideConfig = "3. Applicable Factions";
+        public static ConfigEntry<bool> pmc;
+        public static ConfigEntry<bool> scav;
 
 
         public static void InitConfig(ConfigFile config)
@@ -44,6 +47,10 @@ namespace acidphantasm_hardcoreloot
             slotRig = config.Bind(SlotConfig, "Rig Slot", true, new ConfigDescription("Enable to mark slot unlootable.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
             slotBackpack = config.Bind(SlotConfig, "Backpack Slot", true, new ConfigDescription("Enable to mark slot unlootable.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
 
+            // Sides
+            pmc = config.Bind(SideConfig, "All PMC", true, new ConfigDescription("Unlootable config applies to all PMC Corpses.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            scav = config.Bind(SideConfig, "All Non-PMC", false, new ConfigDescription("Unlootable config applies to all Non-PMC Corpses.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+
             Plugin.enable = enable.Value;
             Plugin.fullUnlootable = fullUnlootable.Value;
             Plugin.slotPrimary = slotPrimary.Value;
@@ -58,6 +65,8 @@ namespace acidphantasm_hardcoreloot
             Plugin.slotArmour = slotArmour.Value;
             Plugin.slotRig = slotRig.Value;
             Plugin.slotBackpack = slotBackpack.Value;
+            Plugin.pmc = pmc.Value;
+            Plugin.scav = scav.Value;
 
             // Triggers
             enable.SettingChanged += Accessibility_SettingChanged;
@@ -74,6 +83,8 @@ namespace acidphantasm_hardcoreloot
             slotArmour.SettingChanged += Accessibility_SettingChanged;
             slotRig.SettingChanged += Accessibility_SettingChanged;
             slotBackpack.SettingChanged += Accessibility_SettingChanged;
+            pmc.SettingChanged += Accessibility_SettingChanged;
+            scav.SettingChanged += Accessibility_SettingChanged;
         }
 
         private static void Accessibility_SettingChanged(object sender, EventArgs e)
@@ -92,6 +103,8 @@ namespace acidphantasm_hardcoreloot
             Plugin.slotArmour = slotArmour.Value;
             Plugin.slotRig = slotRig.Value;
             Plugin.slotBackpack = slotBackpack.Value;
+            Plugin.pmc = pmc.Value;
+            Plugin.scav = scav.Value;
         }
     }
 }

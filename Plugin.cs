@@ -21,6 +21,8 @@ namespace acidphantasm_hardcoreloot
         public static bool slotRig;
         public static bool slotArmour;
         public static bool slotBackpack;
+        public static bool pmc;
+        public static bool scav;
 
         private void Awake()
         {

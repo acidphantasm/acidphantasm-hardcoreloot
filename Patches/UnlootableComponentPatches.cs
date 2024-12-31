@@ -15,18 +15,20 @@ namespace acidphantasm_hardcoreloot.Patches
         }
 
         [PatchPrefix]
-        static bool Prefix(IContainer container, ref bool __result)
+        static bool Prefix(Slot container, ref bool __result)
         {
             if (Plugin.enable)
             {
-                if (container as Slot == null)
+                GClass3109 gclass;
+                gclass = container.ParentItem.Owner as GClass3109;
+
+                if (gclass.Side == EPlayerSide.Savage && !Plugin.scav ||
+                    (gclass.Side == EPlayerSide.Bear || gclass.Side == EPlayerSide.Usec) && !Plugin.pmc ||
+                    container == null)
                 {
                     return true;
                 }
-
-                Slot slot = container as Slot;
-
-                switch (slot.Name)
+                switch (container.Name)
                 {
                     case "FirstPrimaryWeapon":
                         if (Plugin.slotPrimary)
@@ -131,9 +133,27 @@ namespace acidphantasm_hardcoreloot.Patches
         {
             if (Plugin.enable)
             {
-                template.Unlootable = true;
-                template.UnlootableFromSide = EPlayerSideMask.All;
-                template.UnlootableFromSlot = "Scabbard";
+                if (Plugin.pmc)
+                {
+                    template.Unlootable = true;
+                    template.UnlootableFromSide = EPlayerSideMask.Pmc;
+                    template.UnlootableFromSlot = "Scabbard";
+                    return;
+                }
+                if (Plugin.scav)
+                {
+                    template.Unlootable = true;
+                    template.UnlootableFromSide = EPlayerSideMask.Savage;
+                    template.UnlootableFromSlot = "Scabbard";
+                    return;
+                }
+                if (Plugin.pmc && Plugin.scav)
+                {
+                    template.Unlootable = true;
+                    template.UnlootableFromSide = EPlayerSideMask.All;
+                    template.UnlootableFromSlot = "Scabbard";
+                    return;
+                }
             }
         }
     }
