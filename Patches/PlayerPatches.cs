@@ -3,16 +3,11 @@ using SPT.Reflection.Patching;
 using System.Reflection;
 using EFT;
 using acidphantasm_hardcoreloot.Utils;
-using EFT.InventoryLogic;
-using System.Collections.Generic;
-using static EFT.Player;
-using GPUInstancer;
-using System.Linq;
 using EFT.Interactive;
 
 namespace acidphantasm_hardcoreloot.Patches
 {
-    internal class PlayerPatches : ModulePatch
+    internal class PlayerOnDeadPostfixPatch : ModulePatch
     {
 
         private static FieldInfo playerCorpse;
@@ -26,10 +21,16 @@ namespace acidphantasm_hardcoreloot.Patches
         [PatchPostfix]
         static void Postfix(Player __instance)
         {
-            if (!__instance.IsYourPlayer || !MainUtils.IsGroupedWithMainPlayer(__instance))
+            if (!Plugin.enable) return;
+
+            if ((!__instance.IsYourPlayer || !MainUtils.IsGroupedWithMainPlayer(__instance)))
             {
-                Corpse corpse = (Corpse)playerCorpse.GetValue(__instance);
-                corpse.IsZombieCorpse = true;
+                if (Plugin.fullUnlootable)
+                {
+                    Corpse thisCorpse = (Corpse)playerCorpse.GetValue(__instance);
+                    thisCorpse.IsZombieCorpse = true;
+                    return;
+                }
             }
         }
     }
