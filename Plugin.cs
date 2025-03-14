@@ -3,8 +3,7 @@ using BepInEx;
 
 namespace acidphantasm_hardcoreloot
 {
-    [BepInPlugin("phantasm.acid.hardcoreloot", "acidphantasm-hardcoreloot", "1.1.2")]
-    [BepInDependency("com.SPT.core", "3.10.0")]
+    [BepInPlugin("com.acidphantasm.hardcoreloot", "acidphantasm-HardcoreLoot", "1.2.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static bool enable;
