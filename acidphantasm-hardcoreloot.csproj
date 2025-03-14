@@ -135,10 +135,10 @@
       <License Include="$(ProjectDir)LICENSE" />
     </ItemGroup>
     <!-- Copies the output and resources to tarkov game folder -->
-    <Copy SourceFiles="@(OutputDLL);@(License)" DestinationFolder="$(TarkovDir)BepInEx\plugins\acidphantasm-devbalaclavafix\%(RecursiveDir)" />
+    <Copy SourceFiles="@(OutputDLL);@(License)" DestinationFolder="$(TarkovDir)BepInEx\plugins\acidphantasm-hardcoreloot\%(RecursiveDir)" />
     <!-- Creates a release zip file -->
     <RemoveDir Directories="$(ProjectDir)release" />
-    <Copy SourceFiles="@(OutputDLL);@(License)" DestinationFolder="$(ProjectDir)release\acidphantasm-devbalaclavafix\BepInEx\plugins\acidphantasm-devbalaclavafix\%(RecursiveDir)" />
-    <ZipDirectory SourceDirectory="$(ProjectDir)release\acidphantasm-devbalaclavafix\" DestinationFile="$(ProjectDir)release\acidphantasm-devbalaclavafix.zip" />
+    <Copy SourceFiles="@(OutputDLL);@(License)" DestinationFolder="$(ProjectDir)release\acidphantasm-hardcoreloot\BepInEx\plugins\acidphantasm-hardcoreloot\%(RecursiveDir)" />
+    <ZipDirectory SourceDirectory="$(ProjectDir)release\acidphantasm-hardcoreloot\" DestinationFile="$(ProjectDir)release\acidphantasm-hardcoreloot.zip" />
   </Target>
 </Project>
